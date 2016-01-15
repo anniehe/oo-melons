@@ -10,11 +10,6 @@ class AbstractMelonOrder(object):
         self.order_type = order_type
         self.tax = tax
 
-        # GOOD MORNING BEAUTIFUL
-        # TODO: Part two
-        # calc xmas melon price
-        # calc internation order for <10 melons
-
     def get_total(self):
         """Calculate price of melon orders."""
 
@@ -36,19 +31,22 @@ class AbstractMelonOrder(object):
 class DomesticMelonOrder(AbstractMelonOrder):
     """A domestic (in the US) melon order."""
 
-    def __init__(self, species, qty):
-        """Initialize domestic melon order attributes"""
-
-        super(DomesticMelonOrder, self).__init__(species, qty, "domestic", 0.08)
+    order_type = "domestic"
+    tax = 0.08
 
 
 class InternationalMelonOrder(AbstractMelonOrder):
     """An international (non-US) melon order."""
 
-    def __init__(self, species, qty):
-        """Initialize international melon order attributes"""
+    order_type = "international"
+    tax = 0.17
 
-        super(InternationalMelonOrder, self).__init__(species, qty, "international", 0.17)
+    def get_country_code(self, country_code):
+        """Return the country code."""
+
+        self.country_code = country_code
+
+        return self.country_code
 
     def get_total(self):
         """Calculate price of international melon orders."""
@@ -60,9 +58,16 @@ class InternationalMelonOrder(AbstractMelonOrder):
 
         return total
 
-    def get_country_code(self, country_code):
-        """Return the country code."""
 
-        self.country_code = country_code
+class GovernmentMelonOrder(AbstractMelonOrder):
+    """A US Government melon order."""
 
-        return self.country_code
+    order_type = "government"
+    tax = 0.0
+    passed_inspection = False
+
+    def inspect_melons(self):
+        """Updates passed_inspection to true."""
+
+        self.passed_inspection = True
+
